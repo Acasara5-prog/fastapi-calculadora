@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Tiempo de Entrega</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        input {
+            padding: 10px;
+            margin: 10px;
+        }
+        button {
+            padding: 10px;
+            background-color: #007bff;
+            color: rgb(254, 255, 253);
+            border: none;
+            cursor: pointer;
+        }
+        #resultado {
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Calculadora de Tiempo de Entrega</h1>
+    <p>Hola, por favor ingrese la distancia a la que se encuentra del restaurante en kilómetros:</p>
+
+    <form id="formulario">
+        <input type="number" id="distancia" step="0.1" required>
+        <button type="submit">Calcular</button>
+    </form>
+
+    <div id="resultado"></div>
+
+    <script>
+        document.getElementById("formulario").addEventListener("submit", function(event) {
+            event.preventDefault();
+            
+            let distancia = document.getElementById("distancia").value;
+            fetch(`/calcular/?distancia_km=${distancia}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("resultado").innerHTML = 
+                        `<p><strong>Tiempo estimado:</strong> ${data.tiempo_estimado_minutos} minutos</p>
+                         <p>${data.respuesta_ai}</p>`;
+                })
+                .catch(error => console.error("Error:", error));
+        });
+    </script>
+
+</body>
+</html>
